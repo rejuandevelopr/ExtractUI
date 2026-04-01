@@ -1,0 +1,22 @@
+/* Prevent any interference with page styles */
+#clipponent-highlight,
+#clipponent-instruction,
+#clipponent-modal {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+#clipponent-modal * {
+  all: unset;
+  display: revert;
+  font-family: inherit;
+}
+
+#clipponent-modal button {
+  cursor: pointer;
+}
+
+#clipponent-modal pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

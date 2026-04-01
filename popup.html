@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExtractUI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 360px;
+      height: fit-content;
+      padding: 0;
+      font-family: "Nunito", sans-serif;
+      background: #FFFFFF;
+      color: #0A0A0A;
+      line-height: 1.5;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      font-weight: 600;
+    }
+
+    .header {
+      padding: 12px 24px;
+      border-bottom: 1px solid #dfdfdf;
+      flex-shrink: 0;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1F1F1F;
+      letter-spacing: 0.05em;
+      text-transform: capitalize;
+    }
+
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Initial State */
+    .initial-view {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .initial-view p {
+      font-size: 14px;
+      color: #0a0a0a;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #0a0a0a;
+      color: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #0a0a0abd;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #F9F7F4;
+      color: #4A4A4A;
+      border: 1px solid #dfdfdf;
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #E8E3DC;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #F9F7F4;
+      border-radius: 8px;
+      font-size: 13px;
+      text-align: center;
+      border: 1px solid #dfdfdf;
+      color: #6B6B6B;
+    }
+
+    .status.success {
+      background: #F0F9F4;
+      border: 1px solid #dfdfdf;
+      color: #1E6F4E;
+    }
+
+    .status.error {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .feature-list {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #dfdfdf;
+      flex: 1;
+    }
+
+    .feature-list-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0a0a0a;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: #0a0a0a;
+      line-height: 1.6;
+    }
+
+    .feature-icon {
+      width: 24px;
+      height: 24px;
+      background: #F9F7F4;
+      border: 1px solid #dfdfdf;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0a0a0a;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Sidebar Overlay */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 999;
+      backdrop-filter: blur(2px);
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Extracted View Sidebar */
+    .extracted-view-sidebar {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100vh;
+      background: #FFFFFF;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    .extracted-view-sidebar.active {
+      right: 0;
+    }
+
+    .sidebar-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #dfdfdf;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(180deg, #F9F7F4 0%, #FFFFFF 100%);
+      flex-shrink: 0;
+    }
+
+    .sidebar-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1F1F1F;
+      margin: 0;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: #6B6B6B;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .close-btn:hover {
+      background: #F9F7F4;
+      color: #0a0a0a;
+    }
+
+    .extraction-info {
+      padding: 16px 24px;
+      border-bottom: 1px solid #dfdfdf;
+      flex-shrink: 0;
+    }
+
+    .stats-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #dfdfdf;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0a0a0a;
+      border: 1px solid #dfdfdf;
+    }
+
+    .code-sections {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+
+    .code-section {
+      margin-bottom: 24px;
+    }
+
+    .code-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .code-header h3 {
+      margin: 0;
+      color: #1F1F1F;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .code-header .arrow {
+      color: #0a0a0a;
+    }
+
+    .enhanced-label {
+      color: #0a0a0a;
+      font-size: 12px;
+      font-weight: 500;
+      background: #dfdfdf;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+
+    .copy-btn {
+      background: #0a0a0a;
+      color: white;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .copy-btn:hover {
+      background: #2a2a2a;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    }
+
+    .copy-btn.copied {
+      background: #1E6F4E;
+    }
+
+    pre {
+      background: #F9F7F4;
+      border: 1px solid #dfdfdf;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #1F1F1F;
+      margin: 0;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .sidebar-actions {
+      padding: 16px 24px;
+      border-top: 1px solid #dfdfdf;
+      background: #F9F7F4;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-ai {
+      background: linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%);
+      box-shadow: 0 2px 8px rgba(10, 10, 10, 0.25);
+    }
+
+    .btn-ai:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(10, 10, 10, 0.35);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #F9F7F4;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #D1CCC3;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #B8B2A7;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo-section">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512"
+          height="512" x="0" y="0" viewBox="0 0 64 64" style="enable-background:new 0 0 512 512" xml:space="preserve"
+          class="">
+          <g>
+            <path
+              d="m58.63 41.69-7.46-4.3 7.46-4.31a1.25 1.25 0 0 0 0-2.16l-7.45-4.31 7.41-4.28a1.22 1.22 0 0 0 .5-.48 1.25 1.25 0 0 0-.45-1.71l-26-15a1.27 1.27 0 0 0-1.25 0l-26 15a1.25 1.25 0 0 0 0 2.17l7.45 4.3-7.46 4.31a1.25 1.25 0 0 0 0 2.16l7.46 4.31-7.45 4.3a1.25 1.25 0 0 0 0 2.17l26 15A1.23 1.23 0 0 0 32 59a1.29 1.29 0 0 0 .63-.17l26-15a1.26 1.26 0 0 0 0-2.17zM8.5 32l6.83-3.94 16 9.26a1.23 1.23 0 0 0 .62.17 1.29 1.29 0 0 0 .63-.17l16-9.26L55.5 32 32 45.57zM32 56.34 8.5 42.78l6.83-4 16 9.26a1.22 1.22 0 0 0 1.24 0l16.05-9.26 6.83 4z"
+              data-name="Layer 53" fill="#000000" opacity="1" data-original="#000000" class=""></path>
+          </g>
+        </svg>
+      </div>
+      <h1>ExtractUI</h1>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Initial View (Always visible) -->
+    <div id="initialView" class="initial-view">
+      <p>Extract UI components with precision</p>
+
+      <button id="selectBtn" class="btn btn-primary">
+        <span>⊹</span>
+        <span>Start Selection</span>
+      </button>
+
+      <div id="status" class="status hidden"></div>
+
+      <div class="feature-list">
+        <div class="feature-list-title">How it works</div>
+        <div class="feature-item">
+          <div class="feature-icon">1</div>
+          <span>Click the button to activate element selection mode</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">2</div>
+          <span>Hover and click any element on the webpage</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">3</div>
+          <span>View extracted HTML, CSS, states, and responsive styles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- Extracted View Sidebar -->
+  <div id="extractedView" class="extracted-view-sidebar">
+    <div class="sidebar-header">
+      <h2>Extracted Component</h2>
+      <button id="closeSidebar" class="close-btn" title="Close sidebar">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="extraction-info">
+      <div id="statsBadges" class="stats-badges"></div>
+    </div>
+
+    <div class="code-sections">
+      <div class="code-section">
+        <div class="code-header">
+          <h3><span class="arrow">→</span> HTML</h3>
+          <button class="copy-btn" data-target="htmlCode">Copy</button>
+        </div>
+        <pre id="htmlCode"></pre>
+      </div>
+
+      <div class="code-section">
+        <div class="code-header">
+          <h3>
+            <span class="arrow">→</span> CSS
+            <span id="enhancedLabel" class="enhanced-label hidden">Enhanced</span>
+          </h3>
+          <button class="copy-btn" data-target="cssCode">Copy</button>
+        </div>
+        <pre id="cssCode"></pre>
+      </div>
+    </div>
+
+    <div class="sidebar-actions">
+      <button id="cleanAIBtn" class="btn btn-primary btn-ai">
+        <span>✨</span>
+        <span>Clean with AI</span>
+      </button>
+      <button id="reselectBtn" class="btn btn-secondary">
+        <span>🎯</span>
+        <span>Reselect Element</span>
+      </button>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
